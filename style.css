@@ -1,0 +1,35 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e8f5e9;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.container {
+    position: relative;
+}
+
+#broccoli {
+    width: 200px;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+#broccoli:active {
+    transform: scale(0.95);
+}
+
+#explosion {
+    position: absolute;
+    top: 160px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 250px;
+    display: none;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 16px;
+}
