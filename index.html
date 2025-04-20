@@ -1,20 +1,87 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Broccoli Clicker</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Broccoli Clicker</title>
+  <style>
+    body {
+      background-color: #eefcec;
+      text-align: center;
+      font-family: Arial, sans-serif;
+    }
+    #explosion {
+      position: absolute;
+      display: none;
+      pointer-events: none;
+      z-index: 10;
+    }
+    #score {
+      font-size: 1.5em;
+      margin: 20px;
+    }
+    #broccoli-button {
+      cursor: pointer;
+    }
+    .shop {
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Broccoli Clicker</h1>
-        <p>Broccolis: <span id="score">0</span></p>
-        <img src="assets/broccoli.png" id="broccoli" alt="Broccoli">
-        <img src="assets/explosion.png" id="explosion" alt="Explosion">
-        <div id="upgrades">
-            <button id="autoclicker" disabled>Buy Auto-Clicker (100)</button>
-        </div>
-    </div>
-    <script src="script.js"></script>
+  <h1>Broccoli Clicker</h1>
+  <div id="score">Broccolis: 0</div>
+  <img id="broccoli-button" src="assets/broccoli.png" alt="Broccoli" width="200">
+  <img id="explosion" src="assets/explosion.png" width="200">
+  <div class="shop">
+    <button id="buy-autoclicker">Buy Auto-Clicker (100)</button>
+  </div>
+
+  <script>
+    let broccolis = parseInt(localStorage.getItem("broccolis")) || 0;
+    let autoClickers = parseInt(localStorage.getItem("autoClickers")) || 0;
+    const broccoliBtn = document.getElementById("broccoli-button");
+    const explosion = document.getElementById("explosion");
+    const score = document.getElementById("score");
+    const buyBtn = document.getElementById("buy-autoclicker");
+
+    function updateScore() {
+      score.textContent = "Broccolis: " + broccolis;
+      localStorage.setItem("broccolis", broccolis);
+      localStorage.setItem("autoClickers", autoClickers);
+    }
+
+    function showExplosion(x, y) {
+      explosion.style.left = x - 100 + "px";
+      explosion.style.top = y - 100 + "px";
+      explosion.style.display = "block";
+      setTimeout(() => {
+        explosion.style.display = "none";
+      }, 300);
+    }
+
+    broccoliBtn.addEventListener("click", (e) => {
+      broccolis++;
+      updateScore();
+      showExplosion(e.pageX, e.pageY);
+    });
+
+    buyBtn.addEventListener("click", () => {
+      if (broccolis >= 100) {
+        broccolis -= 100;
+        autoClickers++;
+        updateScore();
+      }
+    });
+
+    setInterval(() => {
+      if (autoClickers > 0) {
+        broccolis += autoClickers;
+        updateScore();
+      }
+    }, 1000);
+
+    updateScore();
+  </script>
 </body>
 </html>
